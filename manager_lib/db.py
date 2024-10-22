@@ -5,8 +5,6 @@ from manager_lib.installer import manager_init
 
 DB_PATH = os.path.expanduser("~/.ssh-manager/ssh-conf.db")
 
-print (DB_PATH)
-
 if os.path.exists(DB_PATH):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()

@@ -240,7 +240,7 @@ def addNewKey():
 
 def searchHosts(arg):
     searchObject = f"%{arg}%"
-    cursor.execute("SELECT ID, HOSTNAME, ADDRESS FROM Hosts WHERE HOSTNAME OR ADDRESS LIKE ?", (searchObject,))
+    cursor.execute(f"SELECT ID, HOSTNAME, ADDRESS FROM Hosts WHERE HOSTNAME LIKE '{searchObject}' or ADDRESS LIKE '{searchObject}'")
     rows = cursor.fetchall()
     if rows:
         for row in rows:
@@ -298,7 +298,7 @@ def deleteHosts(arg):
                 else:
                     pass
             break
-        elif i.lower() == 'no':
+        elif i.lower() == 'no' or i.lower() == 'n':
             sys.exit(f"Operation was canceled.")
         else:
             print(f"Incorrect input, try again.")
