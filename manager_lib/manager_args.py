@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 DOTENV_PATH = os.path.expanduser("~/.ssh-manager/.env")
 
-if os.path.exists()
+if os.path.exists(DOTENV_PATH):
     load_dotenv(dotenv_path=DOTENV_PATH)
     
     SCRIPT_HOME = os.getenv('SCRIPT_HOME')
