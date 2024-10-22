@@ -3,6 +3,7 @@
 import argparse
 from manager_lib.core import *
 from manager_lib.installer import manager_init
+from manager_lib.export import *
 
 def main():
     parser = argparse.ArgumentParser(
@@ -28,7 +29,7 @@ def main():
     edit_arg = sub.add_parser('edit')
     edit_arg.add_argument('edit_key', type=str, help='Key of host')
 
-#    sub.add_parser('export')
+    sub.add_parser('export')
 #    sub.add_parser('imp')
 
     sub.add_parser('init')
@@ -56,9 +57,8 @@ def main():
         editHosts(args.edit_key)
         generateSSHConfig()
         sys.exit(0)
-#    elif args.export:
-#        print(6)
-#        exportConfigFromYAML()
+    elif args.command == "export":
+        export_all_to_yaml()
 #    elif args.imp:
 #        print(7)
 #        configImport()
