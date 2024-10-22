@@ -1,4 +1,3 @@
-#!/bin/python3
 import sqlite3
 import os
 from os import environ

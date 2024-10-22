@@ -1,8 +1,8 @@
 #!/opt/workgit/SSH-Manager/venv/bin/python3
 
 import argparse
-from lib.core import *
-from lib.installer import manager_init
+from manager_lib.core import *
+from manager_lib.installer import manager_init
 
 def main():
     parser = argparse.ArgumentParser(
