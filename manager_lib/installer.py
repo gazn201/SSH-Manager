@@ -59,14 +59,14 @@ def manager_init():
     
             #Create .env
             with open(f"{SCRIPT_HOME}/.env", "w") as env:
-                env.write(f"SCRIPT_HOME='{SCRIPT_HOME}' \nSSH_CONFIG='{USER_HOME}/.ssh/config' \n")
+                env.write(f"SCRIPT_HOME='{SCRIPT_HOME}' \nSSH_CONFIG='{USER_HOME}/.ssh/config' \n, DATABASE_PATH='{SCRIPT_HOME}/ssh-conf.db'")
     else:
         #Create script home
         print(f"Creating script directory in {SCRIPT_HOME}")
         Path(SCRIPT_HOME).mkdir(parents=True, exist_ok=True)
         #Create .env
         with open(f"{SCRIPT_HOME}/.env", "w") as env:
-            env.write(f"SCRIPT_HOME='{SCRIPT_HOME}' \nSSH_CONFIG='{USER_HOME}/.ssh/config' \n")
+            env.write(f"SCRIPT_HOME='{SCRIPT_HOME}' \nSSH_CONFIG='{USER_HOME}/.ssh/config' \n, DATABASE_PATH='{SCRIPT_HOME}/ssh-conf.db'")
     
         conn = sqlite3.connect(f'{SCRIPT_HOME}/ssh-conf.db')
         cursor = conn.cursor()
