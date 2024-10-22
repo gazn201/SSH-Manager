@@ -6,6 +6,8 @@ from manager_lib.manager_args import DATABASE_PATH
 
 DB_PATH=DATABASE_PATH
 
+print(DB_PATH)
+
 if os.path.exists(DB_PATH):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
