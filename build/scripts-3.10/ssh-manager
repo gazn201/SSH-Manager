@@ -1,4 +1,4 @@
-#!/opt/workgit/SSH-Manager/venv/bin/python3
+#!/home/dev/SSH-Manager/venv/bin/python3
 
 import argparse
 from manager_lib.core import *
@@ -31,6 +31,8 @@ def main():
 #    sub.add_parser('export')
 #    sub.add_parser('imp')
 
+    sub.add_parser('init')
+
     args = parser.parse_args()
 
     if  args.command == "add":
@@ -62,6 +64,7 @@ def main():
 #        configImport()
     elif args.command == 'init':
         manager_init()
+        sys.exit(0)
     else:
         parser.print_help()
         sys.exit(0)
