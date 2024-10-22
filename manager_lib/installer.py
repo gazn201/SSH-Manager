@@ -39,7 +39,9 @@ def manager_init():
         if not os.path.exists(f"{USER_HOME}/.ssh/config"):
             with open(f'{USER_HOME}/.ssh/config', 'w') as fp:
                 pass
-    
+   
+#TODO IF STANDART DATABASE NOT EXISTING, CHECK .ENV, IF THERE IS NO .ENV AND DATABASE IN DEFAULT WAY, CREATE NEW
+
     #if os.path.exists(SCRIPT_HOME) and os.path.exists(f"{SCRIPT_HOME}/ssh-conf.db"):
     if os.path.exists(SCRIPT_HOME):
         print("ssh-manager directory already exists!")
