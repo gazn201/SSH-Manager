@@ -9,7 +9,12 @@ setup(
         description=DESCRIPTION,
         packages=find_packages(),
         scripts=['ssh-manager'],
-        install_requires=['python-dotenv'], # add any additional packages that 
+        install_requires=['python-dotenv',
+            'argparse',
+            'ipaddress',
+            'pyreadline',
+            'environ',
+            ], # add any additional packages that 
         # needs to be installed along with your package. Eg: 'caer'
 
 
