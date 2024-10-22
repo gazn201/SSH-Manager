@@ -12,6 +12,7 @@ if os.path.exists(DB_PATH):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 elif not os.path.exists(DB_PATH):
+    print(DB_PATH)
     print("Manager database not found!")
     PROMPT = input("Init manager?[y/n]")
     if PROMPT in ['y','Y','Yes','yes']:
