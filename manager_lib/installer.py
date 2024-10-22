@@ -66,7 +66,7 @@ def manager_init():
         Path(SCRIPT_HOME).mkdir(parents=True, exist_ok=True)
         #Create .env
         with open(f"{SCRIPT_HOME}/.env", "w") as env:
-            env.write(f"SCRIPT_HOME='{SCRIPT_HOME}' \nSSH_CONFIG='{USER_HOME}/.ssh/config' \n, DATABASE_PATH='{SCRIPT_HOME}/ssh-conf.db'")
+            env.write(f"SCRIPT_HOME='{SCRIPT_HOME}' \nSSH_CONFIG='{USER_HOME}/.ssh/config' \nDATABASE_PATH='{SCRIPT_HOME}/ssh-conf.db'")
     
         conn = sqlite3.connect(f'{SCRIPT_HOME}/ssh-conf.db')
         cursor = conn.cursor()
