@@ -31,6 +31,8 @@ def main():
 #    sub.add_parser('export')
 #    sub.add_parser('imp')
 
+    sub.add_parser('init')
+
     args = parser.parse_args()
 
     if  args.command == "add":

@@ -14,6 +14,7 @@ setup(
             'ipaddress',
             'pyreadline',
             'environ',
+            'pyyaml',
             ], # add any additional packages that 
         # needs to be installed along with your package. Eg: 'caer'
 
