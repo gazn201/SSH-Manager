@@ -35,6 +35,10 @@ def manager_init():
         print(".ssh not found ->")
         print("Creating .ssh directory ->")
         Path(f"{USER_HOME}/.ssh").mkdir(mode=0o700, exist_ok=True)
+        print("Creating config")
+        if not os.path.exists(f"{USER_HOME}/.ssh/config"):
+            with open(f'{USER_HOME}/.ssh/config', 'w') as fp:
+                pass
     
     #if os.path.exists(SCRIPT_HOME) and os.path.exists(f"{SCRIPT_HOME}/ssh-conf.db"):
     if os.path.exists(SCRIPT_HOME):

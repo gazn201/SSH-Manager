@@ -1,7 +1,7 @@
 import sqlite3
 import os
 import sys
-from lib.installer import manager_init
+from manager_lib.installer import manager_init
 
 DB_PATH = os.path.expanduser("~/.ssh-manager/ssh-conf.db")
 
