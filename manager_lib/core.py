@@ -5,7 +5,6 @@ import os
 from manager_lib.db import *
 
 
-
 def complete_path(text, state):
     line = readline.get_line_buffer()
     path = os.path.expanduser(text)

@@ -35,6 +35,10 @@ def manager_init():
         print(".ssh not found ->")
         print("Creating .ssh directory ->")
         Path(f"{USER_HOME}/.ssh").mkdir(mode=0o700, exist_ok=True)
+        print("Creating config")
+        if not os.path.exists(f"{USER_HOME}/.ssh/config"):
+            with open(f'{USER_HOME}/.ssh/config', 'w') as fp:
+                pass
     
     #if os.path.exists(SCRIPT_HOME) and os.path.exists(f"{SCRIPT_HOME}/ssh-conf.db"):
     if os.path.exists(SCRIPT_HOME):
@@ -60,7 +64,6 @@ def manager_init():
         #Create script home
         print(f"Creating script directory in {SCRIPT_HOME}")
         Path(SCRIPT_HOME).mkdir(parents=True, exist_ok=True)
-        os.system(f"git clone --branch dev https://github.com/gazn201/SSH-Manager.git {SCRIPT_HOME}")
         #Create .env
         with open(f"{SCRIPT_HOME}/.env", "w") as env:
             env.write(f"SCRIPT_HOME='{SCRIPT_HOME}' \nSSH_CONFIG='{USER_HOME}/.ssh/config' \n")
@@ -96,3 +99,4 @@ def manager_init():
                 shell.write(f"export PATH=$PATH:{SCRIPT_HOME}")
     else:
         print(f"Sorry! Uknown shell, add this to yours .[$SHELL]rc file: \n export PATH=$PATH:{SCRIPT_HOME}")
+

@@ -1,16 +1,22 @@
 import sqlite3
 import os
 import sys
+from manager_lib.installer import manager_init
 
-#DB_PATH = os.path.expanduser("~/.ssh-manager/ssh-conf.db")
-DB_PATH = os.path.expanduser("~/SSH-Client-Config-Generator/ssh-conf.db")
+DB_PATH = os.path.expanduser("~/.ssh-manager/ssh-conf.db")
+
 if os.path.exists(DB_PATH):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-else:
-    #print("Manager database not found! Did you run 'ssh-manager init' ?")
-    print(DB_PATH)
-    sys.exit(1)
+elif not os.path.exists(DB_PATH):
+    print("Manager database not found!")
+    PROMPT = input("Init manager?[y/n]")
+    if PROMPT in ['y','Y','Yes','yes']:
+        manager_init()
+    else:
+        print("aborting...")
+        sys.exit(0)
+
 
 def update_field_hosts(field, value, id):
     cursor.execute(f"UPDATE Hosts SET {field} = ? WHERE ID = ?", (value, id))

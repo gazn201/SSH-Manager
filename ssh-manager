@@ -64,6 +64,7 @@ def main():
 #        configImport()
     elif args.command == 'init':
         manager_init()
+        sys.exit(0)
     else:
         parser.print_help()
         sys.exit(0)
