@@ -3,7 +3,8 @@ import ipaddress
 import readline
 import os
 from manager_lib.db import *
-
+from manager_lib.manager_args import SSH_CONFIG, SCRIPT_HOME
+from manager_lib.installer import create_home
 
 def complete_path(text, state):
     line = readline.get_line_buffer()
@@ -214,7 +215,7 @@ def createBaseConfig(*args, **kwargs):
 def generateSSHConfig():
     cursor.execute("SELECT ID, HOSTNAME, ADDRESS, USERNAME, KEY, PORT FROM Hosts")
     rows = cursor.fetchall()
-    with open('config', 'w') as file:
+    with open(SSH_CONFIG, 'w') as file:
         for row in rows:
             id, hostname, address, user, key, port = row
             cursor.execute("SELECT KEYPATH FROM KEYS WHERE KEYID = ?", (key,))
@@ -358,3 +359,6 @@ def editHosts(arg, *args, **kwargs):
         sys.exit(f"Config with ID {id} does not exist!")
 
 
+#CHECK FOR ENV
+if not os.path.exists(f"{SCRIPT_HOME}/.env"):
+    create_home()

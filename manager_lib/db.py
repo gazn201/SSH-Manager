@@ -2,8 +2,9 @@ import sqlite3
 import os
 import sys
 from manager_lib.installer import manager_init
+from manager_lib.manager_args import DATABASE_PATH
 
-DB_PATH = os.path.expanduser("~/.ssh-manager/ssh-conf.db")
+DB_PATH=os.path.expanduser(DATABASE_PATH)
 
 if os.path.exists(DB_PATH):
     conn = sqlite3.connect(DB_PATH)
