@@ -4,6 +4,17 @@ import argparse
 from manager_lib.core import *
 from manager_lib.installer import manager_init
 from manager_lib.export import *
+command_aliases = {
+    '-a': 'add',
+    '-s': 'search',
+    '-A': 'addkey',
+    '-d': 'delete',
+    '-w': 'write',
+    '-e': 'edit',
+    '-E': 'export'
+}
+if len(sys.argv) > 1 and sys.argv[1] in command_aliases:
+    sys.argv[1] = command_aliases[sys.argv[1]]
 
 def main():
     parser = argparse.ArgumentParser(

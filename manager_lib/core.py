@@ -5,6 +5,7 @@ import os
 from manager_lib.db import *
 from manager_lib.manager_args import SSH_CONFIG, SCRIPT_HOME
 from manager_lib.installer import create_home
+from colorama import Fore, Style, init
 
 def complete_path(text, state):
     line = readline.get_line_buffer()
@@ -35,19 +36,19 @@ def check_input(prompt):
     if user_input:
         return user_input
     else:
-        print(f"String is empty!")
+        print(Fore.RED + f"String is empty!" + Style.RESET_ALL)
         return None
 
 #Hostaname
 def get_hostname():
     while True:
-        hostname = check_input(f"Enter hostname: ")
+        hostname = check_input(Fore.GREEN + f"Enter hostname: " + Style.RESET_ALL)
         if hostname:
             query_hostname = "SELECT HOSTNAME FROM Hosts WHERE HOSTNAME = ?"
             cursor.execute(query_hostname, (hostname,))
             result = cursor.fetchone()
             if result:
-                print(f"Hostname {result[0]} already exist!")
+                print(Fore.RED + f"Hostname {result[0]} already exist!" + Style.RESET_ALL)
             else:
                 return hostname
         else:
@@ -56,36 +57,36 @@ def get_hostname():
 #IP Address
 def valid_address():
     while True:
-        address = input(f"Enter IP address: ")
+        address = input(Fore.GREEN + f"Enter IP address: " + Style.RESET_ALL)
         try:
             ip = ipaddress.ip_address(address)
             return address
         except ValueError:
-            print(f"IP address not valid!")
+            print(Fore.RED + f"IP address not valid!" + Style.RESET_ALL)
 
 def get_address():
     while True:
-        print(f"IP address or Domain? (Default IP address)\n[1] IP Address\n[2] Domain")
-        x = input(f"Choose an option: ")
+        print(Fore.GREEN + f"IP address or Domain? (Default IP address)\n[1] IP Address\n[2] Domain" + Style.RESET_ALL)
+        x = input(Fore.GREEN + f"Choose an option: " + Style.RESET_ALL)
         if x == '1' or x == '':
             address = valid_address()
             return address
         elif x == '2':
-            domain = check_input(f"Enter domain: ")
+            domain = check_input(Fore.GREEN + f"Enter domain: " + Style.RESET_ALL)
             if domain:
                 address = domain
                 return address
             else:
                 pass
         else:
-            print(f"Incorrect input, try again.")
+            print(Fore.RED + f"Incorrect input, try again." + Style.RESET_ALL)
 
 
 
 #USERNAME
 def get_username():
     while True:
-        username = check_input(f"Enter username: ")
+        username = check_input(Fore.GREEN + f"Enter username: " + Style.RESET_ALL)
         if username:
             return username
         else:
@@ -94,19 +95,19 @@ def get_username():
 #PORT
 def get_port():
     while True:
-        choice = input(f"Using default port? [Y/n]: ")
+        choice = input(Fore.GREEN + f"Using default port? [Y/n]: " + Style.RESET_ALL)
         if choice.lower() == 'y' or choice == '':
             port = '22'
             return port
         elif choice.lower() == 'n':
             while True:
-                port = check_input(f"Enter port: ")
+                port = check_input(Fore.GREEN + f"Enter port: " + Style.RESET_ALL)
                 if port:
                     return port
                 else:
                     pass
         else:
-            print(f"Incorrect input, try again.")
+            print(Fore.RED + f"Incorrect input, try again." + Style.RESET_ALL)
 
 #KEY
 def list_keys():
@@ -121,12 +122,12 @@ def get_keypath_by_id(record_id):
     if result:
         return result[0]
     else:
-        print(f"{record_id} not found.")
+        print(Fore.RED + f"{record_id} not found." + Style.RESET_ALL)
         return None
 
 def key_definition():
     while True:
-        key_choice = input(f"Key ID (l for list, a for add new key): ")
+        key_choice = input(Fore.GREEN + f"Key ID (l for list, a for add new key): " + Style.RESET_ALL)
         if key_choice.isdigit():
             record_id = int(key_choice)
             path = get_keypath_by_id(record_id)
@@ -139,35 +140,35 @@ def key_definition():
         elif key_choice == 'a':
             addNewKey()
         else:
-            print(f"Incorrect input, try again.")
+            print(Fore.RED + f"Incorrect input, try again." + Style.RESET_ALL)
 
 def define_additional():
     while True:
-        i = input(f"Do you want to add additional parameters? [y/N]: ")
+        i = input(Fore.GREEN + f"Do you want to add additional parameters? [y/N]: " + Style.RESET_ALL)
         if i.lower() == 'y':
             additional = True
             while True:
-                parametr = check_input(f"Enter additional parametr: ")
+                parametr = check_input(Fore.GREEN + f"Enter additional parametr: " + Style.RESET_ALL)
                 if parametr:
                     break
                 else:
                     pass
-            value = input(f"Enter value: ")
+            value = input(Fore.GREEN + f"Enter value: " + Style.RESET_ALL)
             return additional, parametr, value
         elif i.lower() == 'n' or i == '':
             additional = False
             return [additional]
         else:
-            print(f"Incorrect input, try again.")
+            print(Fore.RED + f"Incorrect input, try again." + Style.RESET_ALL)
 
 def edit_additional(id):
     while True:
-        parametr = check_input(f"Enter additional parametr: ")
+        parametr = check_input(Fore.GREEN + f"Enter additional parametr: " + Style.RESET_ALL)
         if parametr:
             break
         else:
             pass
-    value = input(f"Enter value: ")
+    value = input(Fore.GREEN + f"Enter value: " + Style.RESET_ALL)
     cursor.execute("SELECT PARAMETR FROM ADDITIONALPARAMS WHERE ID = ?", (id,))
     additional_parametr = cursor.fetchone()
     if additional_parametr:
@@ -195,7 +196,7 @@ def createBaseConfig(*args, **kwargs):
         print(f"Value = {additional[2]}")
     else:
         pass
-    choice = input(f"\nIs config correct? [Y/n]")
+    choice = input(Fore.GREEN + f"\nIs config correct? [Y/n]" + Style.RESET_ALL)
     if choice.lower() == 'y' or choice == '':
         cursor.execute("SELECT MAX(ID) FROM Hosts")
         last_id = cursor.fetchone()[0]
@@ -209,7 +210,7 @@ def createBaseConfig(*args, **kwargs):
     elif choice.lower() == 'n':
         sys.exit(0)
     else:
-        print(f"Incorrect input, try again.")
+        print(Fore.RED + f"Incorrect input, try again." + Style.RESET_ALL)
 
 
 def generateSSHConfig():
@@ -224,19 +225,23 @@ def generateSSHConfig():
             file.write(f"\tHostName {address}\n")
             file.write(f"\tUser {user}\n")
             file.write(f"\tPort {port}\n")
-            file.write(f"\tIdentityFile {keypath[0]}")
+            file.write(f"\tIdentityFile {keypath[0]}\n")
+            cursor.execute("SELECT PARAMETR, VALUE FROM ADDITIONALPARAMS WHERE ID = ?", (id,))
+            additional_params = cursor.fetchall()
+            for param, value in additional_params:
+                file.write(f"\t{param} {value}\n")
             file.write(f"\n")
 
 
 def addNewKey():
-    keypath = input_with_completion(f"Enter path: ")
-    keyname = input(f"Enter visible name for key: ")
+    keypath = input_with_completion(Fore.GREEN + f"Enter path: " + Style.RESET_ALL)
+    keyname = input(Fore.GREEN + f"Enter visible name for key: " + Style.RESET_ALL)
     cursor.execute("SELECT MAX(KEYID) FROM KEYS")
     last_id = cursor.fetchone()[0]
     new_id = (last_id + 1) if last_id else 1
     cursor.execute("INSERT INTO KEYS (KEYID, KEYNAME, KEYPATH) VALUES (?, ?, ?)", (new_id, keyname, keypath))
     conn.commit()
-    print(f"Key have been added: [{new_id}] {keyname}")
+    print(Fore.GREEN + f"Key have been added: [{new_id}] {keyname}" + Style.RESET_ALL)
 
 
 def searchHosts(arg):
@@ -246,9 +251,9 @@ def searchHosts(arg):
     if rows:
         for row in rows:
             id, hostname, address = row
-            print(f"ID {id} ;; Hostname {hostname} ;; Address {address}")
+            print(Fore.GREEN + f"ID {id} ;; Hostname {hostname} ;; Address {address}" + Style.RESET_ALL)
     else:
-        print(f"No matches found")
+        print(Fore.RED + f"No matches found" + Style.RESET_ALL)
 
 
 def parse_values(value_str):
@@ -280,15 +285,15 @@ def deleteHosts(arg):
             id_not_found.append(host)
             unsuccess_count += 1
     for host in id_not_found:
-        print(f"{host} can't be removed. Not found!")
+        print(Fore.RED + f"{host} can't be removed. Not found!" + Style.RESET_ALL)
     print(f"\n")
     for host in id_found:
         cursor.execute("SELECT HOSTNAME FROM Hosts WHERE ID = ?", (host,))
         hostname = cursor.fetchone()
-        print(f"ID: {host} ;; Hostname {hostname[0]} can be deleted!")
+        print(Fore.GREEN + f"ID: {host} ;; Hostname {hostname[0]} can be deleted!" + Style.RESET_ALL)
     print(f"\n")
     while True:
-        i = input(f"Remove {success_count} hosts? [yes/no]: ")
+        i = input(Fore.RED + f"Remove {success_count} hosts? [yes/no]: " + Style.RESET_ALL)
         if i.lower() == 'yes':
             for host in id_found:
                 cursor.execute("DELETE FROM Hosts where ID = ?", (host,))
@@ -300,11 +305,11 @@ def deleteHosts(arg):
                     pass
             break
         elif i.lower() == 'no' or i.lower() == 'n':
-            sys.exit(f"Operation was canceled.")
+            sys.exit(Fore.GREEN + f"Operation was canceled." + Style.RESET_ALL)
         else:
-            print(f"Incorrect input, try again.")
+            print(Fore.RED + f"Incorrect input, try again." + Style.RESET_ALL)
     conn.commit()
-    print(f"{success_count} was successfully removed / {unsuccess_count} was not removed.")
+    print(Fore.GREEN + f"{success_count} was successfully removed / {unsuccess_count} was not removed." + Style.RESET_ALL)
 
 def is_integer(int_value):
     try:
@@ -326,12 +331,12 @@ def editHosts(arg, *args, **kwargs):
             key = cursor.fetchone()
             cursor.execute("SELECT PARAMETR, VALUE FROM ADDITIONALPARAMS WHERE ID = ?", (id,))
             additional = cursor.fetchone()
-            print(f"\nID: {id}\nHostname: {hostname}\nAddress: {address}\nUsername: {username}\nKey: {key[0]}\nPort: {port}")
+            print(Fore.GREEN + f"\nID: {id}\nHostname: {hostname}\nAddress: {address}\nUsername: {username}\nKey: {key[0]}\nPort: {port}" + Style.RESET_ALL)
             if additional:
-                print(f"Parametr = {additional[0]}")
+                print(Fore.GREEN + f"Parametr = {additional[0]}" + Style.RESET_ALL)
                 if additional[1]:
-                    print(f"Value = {additional[1]}\n")
-            print(f"What do you want to edit?")
+                    print(Fore.GREEN + f"Value = {additional[1]}\n" + Style.RESET_ALL)
+            print(Fore.GREEN + f"What do you want to edit?" + Style.RESET_ALL)
             options = {
                 'h': lambda: update_field_hosts('HOSTNAME', get_hostname(), id),
                 'a': lambda: update_field_hosts('ADDRESS', get_address(), id),
@@ -340,23 +345,23 @@ def editHosts(arg, *args, **kwargs):
                 'p': lambda: update_field_hosts('PORT', get_port(), id),
                 'ad': lambda: edit_additional(id),
                 'all': lambda: (deleteHosts(arg), createBaseConfig()),
-                'c': lambda: sys.exit(f"Operation was canceled.")
+                'c': lambda: sys.exit(Fore.RED + f"Operation was canceled." + Style.RESET_ALL)
             }
             while True:
-                print(f"You can select next options:")
-                print(f"hostname (h), address (a), username (u), key (k), port (p), additional (ad)")
-                print(f"all (all) or cancel (c)")
-                choice = input(f"Please enter your option: ")
+                print(Fore.GREEN + f"You can select next options:" + Style.RESET_ALL)
+                print(Fore.GREEN + f"hostname (h), address (a), username (u), key (k), port (p), additional (ad)" + Style.RESET_ALL)
+                print(Fore.GREEN + f"all (all) or cancel (c)" + Style.RESET_ALL)
+                choice = input(Fore.GREEN + f"Please enter your option: " + Style.RESET_ALL)
                 if choice in options:
                     options[choice]()
                     break
                 else:
-                    print(f"Incorrect input, try again.")
+                    print(Fore.RED + f"Incorrect input, try again." + Style.RESET_ALL)
             conn.commit()
         else:
-            sys.exit(f"Config not found!")
+            sys.exit(Fore.RED + f"Config not found!" + Style.RESET_ALL)
     else:
-        sys.exit(f"Config with ID {id} does not exist!")
+        sys.exit(Fore.RED + f"Config with ID {id} does not exist!" + Style.RESET_ALL)
 
 
 #CHECK FOR ENV
