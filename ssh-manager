@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import argparse
+import sys
+
 from manager_lib.core import *
 from manager_lib.installer import manager_init
 from manager_lib.export import *
@@ -11,7 +13,8 @@ command_aliases = {
     '-d': 'delete',
     '-w': 'write',
     '-e': 'edit',
-    '-E': 'export'
+    '-E': 'export',
+    '-D': 'delkey'
 }
 if len(sys.argv) > 1 and sys.argv[1] in command_aliases:
     sys.argv[1] = command_aliases[sys.argv[1]]
@@ -31,6 +34,9 @@ def main():
     
     sub.add_parser('add')
     sub.add_parser('addkey')
+
+    delkey_arg = sub.add_parser('delkey')
+    delkey_arg.add_argument('key_id', type=int, help='Key\'s ID')
 
     delete_arg = sub.add_parser('delete')
     delete_arg.add_argument('host_key', type=str, help='Key of host')
@@ -70,6 +76,9 @@ def main():
         sys.exit(0)
     elif args.command == "export":
         export_all_to_yaml()
+    elif args.command == "delkey":
+        deleteKey(args.key_id)
+        sys.exit(0)
 #    elif args.imp:
 #        print(7)
 #        configImport()

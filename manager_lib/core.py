@@ -243,6 +243,30 @@ def addNewKey():
     conn.commit()
     print(Fore.GREEN + f"Key have been added: [{new_id}] {keyname}" + Style.RESET_ALL)
 
+def deleteKey(arg):
+    key_id = arg
+    cursor.execute("SELECT KEYNAME, KEYPATH FROM KEYS WHERE KEYID = ?", (key_id,))
+    key_info = cursor.fetchone()
+    key_name, key_path = key_info
+    cursor.execute("SELECT ID, HOSTNAME, ADDRESS FROM Hosts WHERE KEY = ?", (key_id,))
+    host_list = cursor.fetchall()
+    if host_list:
+        print(Fore.RED + f"Key [{key_id}] {key_name} is using in hosts:\n" + Style.RESET_ALL)
+        for row in host_list:
+            id, hostname, address = row
+            print(Fore.GREEN + f"ID {id} ;; Hostname {hostname} ;; Address {address}" + Style.RESET_ALL)
+        sys.exit(1)
+    else:
+        print(Fore.GREEN + f"Key [{key_id}] {key_name} don't use any hosts." + Style.RESET_ALL)
+        i = input(Fore.RED + f"Do you want to remove the key [{key_id}] {key_name}? [yes/no]: " + Style.RESET_ALL)
+        if i.lower() == 'yes':
+            cursor.execute("DELETE FROM KEYS where KEYID = ?", (key_id,))
+        elif i.lower() == 'no' or i.lower() == 'n':
+            sys.exit(Fore.GREEN + f"Operation was canceled." + Style.RESET_ALL)
+        else:
+            print(Fore.RED + f"Incorrect input, try again." + Style.RESET_ALL)
+        conn.commit()
+        print(Fore.GREEN + f"[{key_id}] {key_name} was successfully removed." + Style.RESET_ALL)
 
 def searchHosts(arg):
     searchObject = f"%{arg}%"
