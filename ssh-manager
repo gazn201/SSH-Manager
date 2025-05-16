@@ -1,0 +1,101 @@
+#!/usr/bin/env python3
+
+import argparse
+import sys
+
+from manager_lib.core import *
+from manager_lib.installer import manager_init
+from manager_lib.export import *
+command_aliases = {
+    '-a': 'add',
+    '-s': 'search',
+    '-A': 'addkey',
+    '-d': 'delete',
+    '-w': 'write',
+    '-e': 'edit',
+    '-E': 'export',
+    '-D': 'delkey',
+    '-l': 'list'
+}
+if len(sys.argv) > 1 and sys.argv[1] in command_aliases:
+    sys.argv[1] = command_aliases[sys.argv[1]]
+
+def main():
+    parser = argparse.ArgumentParser(
+            prog='ssh-manager',
+            add_help=False,
+            description='Easily manage your .ssh/config and private keys.',
+            epilog='made with blood and tears'
+            )
+    
+    sub = parser.add_subparsers(dest='command', help='Available commands')
+
+    search_arg = sub.add_parser('search')
+    search_arg.add_argument('hostname', type=str,help='Hostname of host')
+    
+    sub.add_parser('add')
+    sub.add_parser('addkey')
+
+    delkey_arg = sub.add_parser('delkey')
+    delkey_arg.add_argument('key_id', type=int, help='Key\'s ID')
+
+    delete_arg = sub.add_parser('delete')
+    delete_arg.add_argument('host_key', type=str, help='Key of host')
+    
+    sub.add_parser('write')
+
+    edit_arg = sub.add_parser('edit')
+    edit_arg.add_argument('edit_key', type=str, help='Key of host')
+
+    list_arg = sub.add_parser('list')
+    list_arg.add_argument('selector', type=str, help='list key, hosts')
+
+    sub.add_parser('export')
+#    sub.add_parser('imp')
+
+    sub.add_parser('init')
+
+    args = parser.parse_args()
+
+    if  args.command == "add":
+        createBaseConfig()
+        generateSSHConfig()
+        sys.exit(0)
+    elif args.command == "search":
+        searchHosts(args.hostname)
+        sys.exit(0)
+    elif args.command == "addkey":
+        addNewKey()
+        sys.exit(0)
+    elif args.command == "delete":
+        deleteHosts(args.host_key)
+        generateSSHConfig()
+        sys.exit(0)
+    elif args.command == 'write':
+        generateSSHConfig()
+        sys.exit(0)
+    elif args.command == 'edit':
+        editHosts(args.edit_key)
+        generateSSHConfig()
+        sys.exit(0)
+    elif args.command == "export":
+        export_all_to_yaml()
+    elif args.command == "delkey":
+        deleteKey(args.key_id)
+        sys.exit(0)
+    elif args.command == "list":
+        listParams(args.selector)
+        sys.exit(0)
+#    elif args.imp:
+#        print(7)
+#        configImport()
+    elif args.command == 'init':
+        manager_init()
+        sys.exit(0)
+    else:
+        parser.print_help()
+        sys.exit(0)
+
+if __name__ == '__main__':
+    main()
+
