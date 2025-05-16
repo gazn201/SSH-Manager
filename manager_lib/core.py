@@ -279,7 +279,23 @@ def searchHosts(arg):
     else:
         print(Fore.RED + f"No matches found" + Style.RESET_ALL)
 
-
+def listParams(arg):
+    if arg == "key":
+        cursor.execute("SELECT KEYID, KEYNAME, KEYPATH FROM KEYS")
+        keys = cursor.fetchall()
+        for row in keys:
+            key_id, key_name, key_path = row
+            print(Fore.GREEN + f"ID {key_id} ;; Key name {key_name} ;; Key path {key_path}" + Style.RESET_ALL)
+    elif arg == "hosts":
+        searchHosts(all)
+        cursor.execute(f"SELECT ID, HOSTNAME, ADDRESS FROM Hosts")
+        hosts = cursor.fetchall()
+        for row in hosts:
+            id, hostname, address = row
+            print(Fore.GREEN + f"ID {id} ;; Hostname {hostname} ;; Address {address}" + Style.RESET_ALL)
+    else:
+        print(Fore.RED + f"No valid argument!" + Style.RESET_ALL)
+        sys.exit(1)
 def parse_values(value_str):
     values = []
     HostIDs = value_str.split(',')
