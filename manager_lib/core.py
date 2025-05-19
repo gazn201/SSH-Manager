@@ -287,12 +287,19 @@ def listParams(arg):
             key_id, key_name, key_path = row
             print(Fore.GREEN + f"ID {key_id} ;; Key name {key_name} ;; Key path {key_path}" + Style.RESET_ALL)
     elif arg == "hosts":
-        searchHosts(all)
         cursor.execute(f"SELECT ID, HOSTNAME, ADDRESS FROM Hosts")
         hosts = cursor.fetchall()
         for row in hosts:
             id, hostname, address = row
             print(Fore.GREEN + f"ID {id} ;; Hostname {hostname} ;; Address {address}" + Style.RESET_ALL)
+    elif arg == "additional":
+        cursor.execute(f"SELECT ID, PARAMETR, VALUE FROM ADDITIONALPARAMS")
+        params = cursor.fetchall()
+        for row in params:
+            id, parametr, value = row
+            cursor.execute("SELECT HOSTNAME FROM Hosts WHERE ID = ?", (id,))
+            hostname = cursor.fetchone()[0]
+            print(Fore.GREEN + f"ID: {id} ;; Hostname: {hostname} ;; Param: {parametr} ;; Value: {value}" + Style.RESET_ALL)
     else:
         print(Fore.RED + f"No valid argument!" + Style.RESET_ALL)
         sys.exit(1)
@@ -358,7 +365,6 @@ def is_integer(int_value):
     except ValueError:
         return False
 
-
 def editHosts(arg, *args, **kwargs):
     int_value = arg
     id = arg
@@ -402,7 +408,6 @@ def editHosts(arg, *args, **kwargs):
             sys.exit(Fore.RED + f"Config not found!" + Style.RESET_ALL)
     else:
         sys.exit(Fore.RED + f"Config with ID {id} does not exist!" + Style.RESET_ALL)
-
 
 #CHECK FOR ENV
 if not os.path.exists(f"{SCRIPT_HOME}/.env"):
