@@ -280,7 +280,7 @@ def searchHosts(arg):
         print(Fore.RED + f"No matches found" + Style.RESET_ALL)
 
 def listParams(arg):
-    if arg == "key":
+    if arg == "keys":
         cursor.execute("SELECT KEYID, KEYNAME, KEYPATH FROM KEYS")
         keys = cursor.fetchall()
         for row in keys:
