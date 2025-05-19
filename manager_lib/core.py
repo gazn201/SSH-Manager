@@ -382,7 +382,7 @@ def editHosts(arg, *args, **kwargs):
                 print(Fore.GREEN + f"Parametr = {additional[0]}" + Style.RESET_ALL)
                 if additional[1]:
                     print(Fore.GREEN + f"Value = {additional[1]}\n" + Style.RESET_ALL)
-            print(Fore.GREEN + f"What do you want to edit?" + Style.RESET_ALL)
+            print(f"What do you want to edit?")
             options = {
                 'h': lambda: update_field_hosts('HOSTNAME', get_hostname(), id),
                 'a': lambda: update_field_hosts('ADDRESS', get_address(), id),
@@ -394,10 +394,10 @@ def editHosts(arg, *args, **kwargs):
                 'c': lambda: sys.exit(Fore.RED + f"Operation was canceled." + Style.RESET_ALL)
             }
             while True:
-                print(Fore.GREEN + f"You can select next options:" + Style.RESET_ALL)
-                print(Fore.GREEN + f"hostname (h), address (a), username (u), key (k), port (p), additional (ad)" + Style.RESET_ALL)
-                print(Fore.GREEN + f"all (all) or cancel (c)" + Style.RESET_ALL)
-                choice = input(Fore.GREEN + f"Please enter your option: " + Style.RESET_ALL)
+                print(f"You can select next options:")
+                print(f"hostname (h), address (a), username (u), key (k), port (p), additional (ad)")
+                print(f"all (all) or cancel (c)")
+                choice = input(f"Please enter your option: ")
                 if choice in options:
                     options[choice]()
                     break
